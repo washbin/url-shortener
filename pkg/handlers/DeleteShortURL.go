@@ -4,15 +4,14 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/washbin/url-shortener/pkg/mocks"
 	"github.com/washbin/url-shortener/pkg/models"
 )
 
-func DeleteShortURL(w http.ResponseWriter, r *http.Request) {
+func (h handler) DeleteShortURL(w http.ResponseWriter, r *http.Request) {
 	// remove the initial / by r.URL.Path[1:]
-	short_url := r.URL.Path[1:]
-	if _, ok := mocks.SiteList[short_url]; ok {
-		delete(mocks.SiteList, short_url)
+	slug := r.URL.Path[1:]
+	if err := h.DB.Get(ctx, slug).Err(); err == nil {
+		h.DB.Del(ctx, slug)
 
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(models.Response{
@@ -20,6 +19,7 @@ func DeleteShortURL(w http.ResponseWriter, r *http.Request) {
 			Message: "Successfully deleted short url",
 		})
 		return
+
 	}
 
 	w.WriteHeader(http.StatusBadRequest)

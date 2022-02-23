@@ -2,14 +2,14 @@ package handlers
 
 import (
 	"net/http"
-
-	"github.com/washbin/url-shortener/pkg/mocks"
 )
 
-func RedirectURL(w http.ResponseWriter, r *http.Request) {
+func (h handler) RedirectURL(w http.ResponseWriter, r *http.Request) {
 	// remove the initial / by r.URL.Path[1:]
-	if val, ok := mocks.SiteList[r.URL.Path[1:]]; ok {
-		http.Redirect(w, r, val, http.StatusMovedPermanently)
+	slug := r.URL.Path[1:]
+	// Redirect if there is a mapping for slug
+	if url := h.DB.Get(ctx, slug).Val(); url != "" {
+		http.Redirect(w, r, url, http.StatusMovedPermanently)
 		return
 	}
 

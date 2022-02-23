@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 FROM golang:1.17-buster AS builder
 WORKDIR /go/src/app
-COPY go.mod ./
-# RUN go mod download && go mod verify
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux \
 	 go build -o /go/bin/app ./cmd/
