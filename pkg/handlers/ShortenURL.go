@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/washbin/url-shortener/pkg/mocks"
 	"github.com/washbin/url-shortener/pkg/models"
 )
 
@@ -22,12 +23,13 @@ func ShortenURL(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(models.Error{Message: "Invalid slug"})
 		return
 	}
-	if _, ok := siteList[data.Slug]; ok {
+	if _, ok := mocks.SiteList[data.Slug]; ok {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(models.Error{Message: "Slug already exists"})
 		return
 	}
-	siteList[data.Slug] = data.URL
+
+	mocks.SiteList[data.Slug] = data.URL
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(models.ShortURL{Short: r.Host + "/" + data.Slug})

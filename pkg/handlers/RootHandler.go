@@ -5,12 +5,6 @@ import (
 	"regexp"
 )
 
-var (
-	siteList      = make(map[string]string)
-	redirectURLre = regexp.MustCompile(`^\/([a-zA-Z0-9]+)$`)
-	slugRe        = regexp.MustCompile(`^[a-zA-Z0-9]+$`)
-)
-
 func RootHandler(rw http.ResponseWriter, r *http.Request) {
 	rw.Header().Set("Content-Type", "application/json")
 
