@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Logging logs all requests with its ath and the time it took to process
+// Logging logs all requests with its method, path, origin ip and the time it took to process
 func Logging() MiddleWare {
 	return func(hf http.HandlerFunc) http.HandlerFunc {
 		return func(rw http.ResponseWriter, r *http.Request) {
