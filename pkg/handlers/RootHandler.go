@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"regexp"
 )
 
 func RootHandler(rw http.ResponseWriter, r *http.Request) {
@@ -16,6 +15,10 @@ func RootHandler(rw http.ResponseWriter, r *http.Request) {
 	// GET /{slug}
 	case r.Method == http.MethodGet && redirectURLre.MatchString(r.URL.Path):
 		RedirectURL(rw, r)
+		return
+	// DELETE /{slug}
+	case r.Method == http.MethodDelete && redirectURLre.MatchString(r.URL.Path):
+		DeleteShortURL(rw, r)
 		return
 	default:
 		NotFound(rw, r)

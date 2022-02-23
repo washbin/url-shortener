@@ -5,8 +5,9 @@ type Payload struct {
 	Slug string `json:"slug"`
 }
 
-type Error struct {
-	Message string `json:"error"`
+type Response struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
 }
 
 type ShortURL struct {

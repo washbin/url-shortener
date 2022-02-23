@@ -15,17 +15,26 @@ func ShortenURL(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(models.Error{Message: "Invalid request body"})
+		json.NewEncoder(w).Encode(models.Response{
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "Invalid payload",
+		})
 		return
 	}
 	if !slugRe.MatchString(data.Slug) {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(models.Error{Message: "Invalid slug"})
+		json.NewEncoder(w).Encode(models.Response{
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "Invalid slug",
+		})
 		return
 	}
 	if _, ok := mocks.SiteList[data.Slug]; ok {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(models.Error{Message: "Slug already exists"})
+		json.NewEncoder(w).Encode(models.Response{
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "Slug already exists",
+		})
 		return
 	}
 
