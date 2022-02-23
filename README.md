@@ -14,3 +14,5 @@ A url shortener created using go
 	> with body `{"url": "your url", "slug": "your desired slug"}`
 - `GET /{slug}` redirect to the original url
 - `DELETE /{slug}` remove's the short url
+
+> Note: Credits to [Samrid Pandit](https://github.com/caffeineduck) and do check out his superior python implementation at [shotcut](https://github.com/caffeineduck/shotcut)
